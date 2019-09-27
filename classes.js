@@ -61,11 +61,25 @@ class Employee {
 
 //Code Here
 
+class Manager extends Employee {
+  constructor(first_name, last_name, email, age) {
+    super(first_name, last_name, email, age);
+    this.reports = [];
+  }
+  hire(empl) {
+    return this.reports.push(empl);
+  }
+  fire(empl) {
+    return this.reports.splice(empl, 1);
+  }
+}
+
 ////////// PROBLEM 3 //////////
 
 /*
   Managers for Widget Co. get promoted when they get more employees, and get a bonus when they fire employees.
-  create a class ProgressiveManager that extends Manager.  A Progressive Manager has all of the same properties as a manager with the following additional properties:
+  create a class ProgressiveManager that extends Manager.  
+  A Progressive Manager has all of the same properties as a manager with the following additional properties:
     - title - default 'Not a manager'
     - bonus - default 0
 
@@ -83,6 +97,40 @@ class Employee {
 */
 
 //Code Here
+class ProgressiveManager extends Manager {
+  constructor(first_name, last_name, email, age, reports) {
+    super(first_name, last_name, email, age, reports);
+    this.title = "Not a manager";
+    this.bonus = 0;
+  }
+
+  hire(empl) {
+    super.hire(empl);
+    if (this.reports.length === 0) {
+      return (this.title = "Not a manager");
+    }
+    if (this.reports.length >= 1 && this.reports.length <= 3) {
+      return (this.title = "Barely Manager");
+    }
+    if (this.reports.length >= 4 && this.reports.length <= 10) {
+      return (this.title = "Mostly Manager");
+    }
+    if (this.reports.length >= 11 && this.reports.length <= 50) {
+      return (this.title = "Manager");
+    }
+    if (this.reports.length >= 51 && this.reports.length <= 100) {
+      return (this.title = "Manager Plus");
+    }
+    if (this.reports.length >= 101) {
+      return (this.title = "Bestest Manager");
+    }
+  }
+
+  fire(empl) {
+    super.fire(empl);
+    return (this.bonus += 100);
+  }
+}
 
 ////////// PROBLEM 4 - Black Diamond //////////
 
@@ -108,3 +156,27 @@ class Employee {
 */
 
 //Code Here
+
+class Machine {
+  constructor() {
+    this.widgets_made_count = 0;
+    this.wear_and_tear_count = 0;
+    this.needs_reboot = false;
+  }
+
+  makeWidgets(number) {
+    this.widgets_made_count += number;
+    this.wear_and_tear_count += number / 50;
+  }
+
+  fixMachine() {
+    this.needs_reboot = true;
+  }
+
+  reboot() {
+    return () => {
+      this.wear_and_tear_count -= 10;
+      this.needs_reboot = false;
+    };
+  }
+}
